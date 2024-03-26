@@ -13,17 +13,36 @@ const Layout = () => {
         DMRegular: require('../assets/fonts/DMSans-Regular.ttf'),
     })
 
-    // Only display homescreen once the fonts are loaded
     const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded) {
+        if(fontsLoaded) {
             await SplashScreen.hideAsync();
         }
     }, [fontsLoaded])
 
-    if (!fontsLoaded) return null;
+    if(!fontsLoaded) return null;
+
+    return <Stack onLayout={onLayoutRootView} />
+
+    /* const [fontsLoaded] = useFonts({
+        'DMBold': require('../assets/fonts/DMSans-Bold.ttf'),
+        'DMMedium': require('../assets/fonts/DMSans-Medium.ttf'),
+        'DMRegular': require('../assets/fonts/DMSans-Regular.ttf'),
+    });
+
+    // Only display homescreen once the fonts are loaded
+    const onLayoutRootView = useCallback(async () => {
+        if (fontsLoaded || fontError) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    if (!fontsLoaded) {
+        console.log("+++++++++++");
+        return null;
+    }
 
     // Returns a Stack with onLayout (Promise returned from callback above)
-    return <Stack onLayout={onLayoutRootView}/>
+    return <Stack onLayout={onLayoutRootView} /> */
 }
 
 export default Layout;

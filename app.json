@@ -5,9 +5,13 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "name": "Golf-App",
-    "slug": "Golf-App"
+    "slug": "Golf-App",
+    "splash": {
+      "backgroundColor": "#FEF9B0"
+    }
   }
 }
