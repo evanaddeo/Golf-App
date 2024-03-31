@@ -15,12 +15,12 @@ const Nearbyjobs = () => {
   ('search', {
     query: 'React developer',
     num_pages: 1
-  })
+  });
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Popular Jobs</Text>
+        <Text style={styles.headerTitle}>Nearby Jobs</Text>
         <TouchableOpacity>
           <Text style={styles.headerBtn}>Show All</Text>
         </TouchableOpacity>
@@ -32,15 +32,18 @@ const Nearbyjobs = () => {
         ) : error ? (     // Else if error
           <Text>Something went wrong</Text>
         ) : (             // Else
-          <FlatList 
-            data={data}                  // Mock data
-            renderItem={({ item }) => (
-              <PopularJobCard item={item} />
-            )}
-            keyExtractor={item => item?.job_id}  // Where job_id is one of the keys of real data
-            contentContainerStyle={{ columnGap: SIZES.medium }}
-            horizontal
-          />
+
+          // Return a NearbyJobCard for each "job" in the data map
+          data?.map((job) => (
+
+            // "?." allows for nonexistent values, continue
+            // to use "." after affirming the value exists
+            <NearbyJobCard
+              job={job}
+              key={`nearby-job-${job?.job_id}`}
+              handleNavigate={() => router.push(`/job-details/${job.job_id}`)}
+            />
+          ))
         )}
       </View>
     </View>
