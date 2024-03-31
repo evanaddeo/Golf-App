@@ -6,10 +6,21 @@ import styles from './popularjobs.style'
 import { COLORS, SIZES } from '../../../constants';
 import PopularJobCard from '../../common/cards/popular/PopularJobCard';
 
+import useFetch from '../../../hook/useFetch';
+
 const Popularjobs = () => {
   const router = useRouter();
-  const isLoading = false;
-  const error = false;
+  
+  // Destructure useFetch return object
+  const { data, isLoading, error } = useFetch
+  ('search', {
+    query: 'React developer',
+    num_pages: 1
+  });
+  const [selectedJob, setSelectedJob] = useState()
+  const handleCardPress = (item) => {
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -27,8 +38,8 @@ const Popularjobs = () => {
           <Text>Something went wrong</Text>
         ) : (             // Else
           <FlatList 
-            data={[1, 2, 3, 4, 5, 6, 7, 8]}                  // Mock data
-            renderItem={( item ) => (
+            data={data}                  // Mock data
+            renderItem={({ item }) => (
               <PopularJobCard item={item} />
             )}
             keyExtractor={item => item?.job_id}  // Where job_id is one of the keys of real data
