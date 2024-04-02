@@ -8,18 +8,37 @@ import { Company, JobAbout, JobFooter, JobTabs, ScreenHeaderBtn, Specifics } fro
 import { COLORS, icons, SIZES } from '../../constants';
 import useFetch from '../../hook/useFetch';
 
+const tabs = ["About", "Qualifications", "Responsibilities"];
+
 const JobDetails = () => {
     // Allows us to get the specific ID of the page we are on
     const params = useSearchParams();
     const router = useRouter();
 
-    useState [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = () => {}
-
     const{ data, isLoading, error, refetch } = useFetch('job-details', {
         job_id: params.id
     })
+
+    const [refreshing, setRefreshing] = useState(false);
+    const [activeTab, setActiveTab] = useState(tabs[0]);     // About Section
+
+    const onRefresh = () => {}
+
+    const displayTabContent = () => {
+        switch (activeTab) {
+            case "Qualifications":
+                return <Specifics 
+                    title="Qualifications"
+                    points={data[0].job_highlights?.qualifications ?? ['N/A']}
+                    // "??" indicates to display [N/A] IF 
+                    // "job_highlights?.qualifications" does not exist
+                />
+            case "About":
+            case "Responsibilities":
+            default:
+                break;
+        }
+    }
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.lightWhite}}>
@@ -57,7 +76,7 @@ const JobDetails = () => {
                     ) : data.length === 0 ? (
                         <Text>No data</Text>
                     ) : (
-                        <View style={{padding: SIZES.medium, paddingBottom: 100}}>
+                        <View style={{padding: SIZES.medium, paddingBottom: 100 }}>
                             <Company
                                 companyLogo={data[0].employer_logo}
                                 jobTitle={data[0].job_title}
@@ -66,7 +85,12 @@ const JobDetails = () => {
                             />
 
                             <JobTabs
+                                tabs={tabs}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
                             />
+
+                            {displayTabContent()}
                         </View>
                     )}
                 </ScrollView>
